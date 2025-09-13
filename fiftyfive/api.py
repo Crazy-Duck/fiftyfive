@@ -1,15 +1,22 @@
 """The 50five API code"""
 
 import logging
-
+from enum import StrEnum
 from json import dumps
 from typing import Any
 
 from aiohttp import ClientSession
 
 from .decorators import authenticated
-from .models import Market
 from .requests import Request
+
+
+class Market(StrEnum):
+    BELUX = "belux"
+    NL = "nl"
+    DE = "de"
+    FR = "fr"
+
 
 class Api:
     """Class to make API requests"""

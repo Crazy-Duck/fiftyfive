@@ -1,11 +1,11 @@
 [project]
-name = "50five"
+name = "python-50five"
 version = "0.0.1"
 description = "Python 3 package to retrieve EV charger data from 50five"
 dependencies = [
     "aiohttp",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 classifiers = [
     "Programming Language :: Python :: 3.13",
     "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
@@ -19,16 +19,13 @@ license = {text = "GPLv3+"}
 "Bug Tracker" = "https://github.com/Crazy-Duck/python-50five/issues"
 
 [build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
-
-[tool.pdm]
-distribution = true
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.mypy]
-python_version = 3.13
+python_version = "3.13"
 show_error_codes = true
-follow_imports = silent
+follow_imports = "silent"
 ignore_missing_imports = true
 strict_equality = true
 warn_incomplete_stub = true

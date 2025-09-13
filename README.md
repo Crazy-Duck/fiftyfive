@@ -1,11 +1,35 @@
-# Python: 50five
+# Python-50five
 
 Python 3 package to retrieve EV charger data from 50five
 
 ## Installation
 
 ```bash
-pip3 install fiftyfive
+pip3 install python-50five
+```
+
+## Usage
+
+```Python
+import asyncio
+
+from aiohttp import ClientSession
+from fiftyfive import Api, Market, NetworkOverview
+
+
+async def main():
+    """Main module"""
+
+    async with ClientSession() as session:
+        api = Api(session, "email", "password", Market.BELUX)
+
+        result = await api.make_requests([NetworkOverview()])
+        print(result)
+
+
+if __name__ == "__main__":
+    loop = asyncio.new_event_loop()
+    loop.run_until_complete(main())
 ```
 
 ## WARNING

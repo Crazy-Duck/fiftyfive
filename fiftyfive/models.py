@@ -2,7 +2,6 @@
 
 from typing import Literal
 
-Market = Literal["belux", "nl", "de", "fr"]
 Mode = Literal["customer", "rechargeSpot"]
 TimeGrouping = Literal["day", "week", "month", "year"]
 
