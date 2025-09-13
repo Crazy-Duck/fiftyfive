@@ -1,11 +1,11 @@
-# Python-50five
+# Fiftyfive
 
 Python 3 package to retrieve EV charger data from 50five
 
 ## Installation
 
 ```bash
-pip3 install python-50five
+pip3 install fiftyfive
 ```
 
 ## Usage
