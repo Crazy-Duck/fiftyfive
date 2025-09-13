@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from functools import wraps
-from typing import Awaitable, Callable, TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Awaitable, Callable, cast
 
 if TYPE_CHECKING:
     from .api import Api
