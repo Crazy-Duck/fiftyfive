@@ -16,6 +16,7 @@ class Market(StrEnum):
     NL = "nl"
     DE = "de"
     FR = "fr"
+    UK = "uk"
 
 
 class Api:

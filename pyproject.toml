@@ -1,6 +1,6 @@
 [project]
 name = "fiftyfive"
-version = "0.0.1"
+version = "0.1.0"
 description = "Python 3 package to retrieve EV charger data from 50five"
 dependencies = [
     "aiohttp",
