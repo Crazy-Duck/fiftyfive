@@ -235,3 +235,73 @@ class Stop(Action):
             "clickedButtonId": 0,
             "channel": self.channel.id,
         }
+
+
+class SoftReset(Action):
+    def __init__(self, channel: Channel):
+        self.channel = channel
+
+    @property
+    def params(self) -> dict[str, str | int]:
+        return {
+            "action": "SoftReset",
+            "rechargeSpotId": self.channel.recharge_spot_id,
+            "clickedButtonId": 0,
+            "channel": self.channel.id,
+        }
+
+
+class HardReset(Action):
+    def __init__(self, channel: Channel):
+        self.channel = channel
+
+    @property
+    def params(self) -> dict[str, str | int]:
+        return {
+            "action": "HardReset",
+            "rechargeSpotId": self.channel.recharge_spot_id,
+            "clickedButtonId": 0,
+            "channel": self.channel.id,
+        }
+
+
+class UnlockConnector(Action):
+    def __init__(self, channel: Channel):
+        self.channel = channel
+
+    @property
+    def params(self) -> dict[str, str | int]:
+        return {
+            "action": "UnlockConnector",
+            "rechargeSpotId": self.channel.recharge_spot_id,
+            "clickedButtonId": 0,
+            "channel": self.channel.id,
+        }
+
+
+class Block(Action):
+    def __init__(self, channel: Channel):
+        self.channel = channel
+
+    @property
+    def params(self) -> dict[str, str | int]:
+        return {
+            "action": "Block",
+            "rechargeSpotId": self.channel.recharge_spot_id,
+            "clickedButtonId": 0,
+            "channel": self.channel.id,
+        }
+
+
+class Unblock(Action):
+    def __init__(self, channel: Channel):
+        self.channel = channel
+
+    @property
+    def params(self) -> dict[str, str | int]:
+        return {
+            "action": "Unblock",
+            "rechargeSpotId": self.channel.recharge_spot_id,
+            "clickedButtonId": 0,
+            "channel": self.channel.id,
+        }
