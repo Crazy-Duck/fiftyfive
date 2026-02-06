@@ -23,13 +23,13 @@ class Api:
     """Class to make API requests"""
 
     def __init__(
-        self, session: ClientSession, email: str, password: str, market: Market
+        self, session: ClientSession, email: str, password: str, market: Market, was_shell=True
     ):
         """Initilaize the session."""
         self.session = session
         self.email = email
         self.password = password
-        self.url = f"https://50five-s{market}.evc-net.com"
+        self.url = f"https://50five{'-s' if was_shell else ''}{market}.evc-net.com"
         self.api = f"{self.url}/api/ajax"
         self.logger = logging.getLogger("50five")
 

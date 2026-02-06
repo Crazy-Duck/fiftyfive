@@ -9,7 +9,7 @@ from sys import stdout
 from aiohttp import ClientSession
 from dotenv import load_dotenv
 
-from fiftyfive import Api, Market, NetworkOverview, NetworkOverviewDetails, Channel
+from fiftyfive import Api, Market, NetworkOverview, Overview, Channel
 
 load_dotenv()
 
@@ -20,17 +20,18 @@ async def main():
     async with ClientSession() as session:
         api = Api(session, getenv("50FIVE_EMAIL"), getenv("50FIVE_PASSWORD"), Market.BELUX)
 
-        result = await api.make_requests([NetworkOverview()])
-        print(result)
+        networks = await api.make_requests([NetworkOverview()])
+        networks[0] += networks[0]
 
         details = await api.make_requests(
             [
-                NetworkOverviewDetails([Channel(charger["IDX"], charger["CHANNEL"])])
-                for charger in result[0]
+                Overview(network["IDX"])
+                for network in networks[0]
             ]
         )
 
-        [print(d) for d in details[0]]
+        result = [c | d[0] for c, d in zip(networks[0], details, strict=True)]
+        [print(r) for r in result]
 
 
 if __name__ == "__main__":

@@ -21,7 +21,7 @@ async def main():
     """Main module"""
 
     async with ClientSession() as session:
-        api = Api(session, "email", "password", Market.BELUX)
+        api = Api(session, "email", "password", Market.BELUX, was_shell=True)
 
         result = await api.make_requests([NetworkOverview()])
         print(result)
@@ -34,7 +34,8 @@ if __name__ == "__main__":
 
 ## WARNING
 
-50five uses separate endpoints depending on the market (belux, nl, de, ...). As
-I myself only have access to an account in the belux market, I cannot do any
-testing/reverse engineering on the other markets, so I can't give any guarantee
-anything will work for accounts in them.
+50five uses separate endpoints depending on the market (belux, nl, de, ...) as
+well as whether or not you were migrated over from Shell Recharge. As I myself
+only have access to an account in the belux market as an ex-Shell customer, I
+cannot do any testing/reverse engineering on the other markets, so I can't give
+any guarantee anything will work for accounts in them.
