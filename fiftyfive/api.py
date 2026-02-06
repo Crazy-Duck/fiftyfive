@@ -19,17 +19,29 @@ class Market(StrEnum):
     UK = "uk"
 
 
+class CustomerType(StrEnum):
+    """Enum type for customers."""
+
+    FIFTYFIVE = "fiftyfive"
+    FORMER_SHELL = "shell"
+
+
 class Api:
     """Class to make API requests"""
 
     def __init__(
-        self, session: ClientSession, email: str, password: str, market: Market, was_shell=True
+        self,
+        session: ClientSession,
+        email: str,
+        password: str,
+        market: Market,
+        customer_type=CustomerType.FORMER_SHELL,
     ):
         """Initilaize the session."""
         self.session = session
         self.email = email
         self.password = password
-        self.url = f"https://50five{'-s' if was_shell else ''}{market}.evc-net.com"
+        self.url = f"https://50five{'-s' if customer_type == CustomerType.FORMER_SHELL else ''}{market}.evc-net.com"
         self.api = f"{self.url}/api/ajax"
         self.logger = logging.getLogger("50five")
 

@@ -14,14 +14,14 @@ pip3 install fiftyfive
 import asyncio
 
 from aiohttp import ClientSession
-from fiftyfive import Api, Market, NetworkOverview
+from fiftyfive import Api, CustomerType, Market, NetworkOverview
 
 
 async def main():
     """Main module"""
 
     async with ClientSession() as session:
-        api = Api(session, "email", "password", Market.BELUX, was_shell=True)
+        api = Api(session, "email", "password", Market.BELUX, CustomerType.FORMER_SHELL)
 
         result = await api.make_requests([NetworkOverview()])
         print(result)
