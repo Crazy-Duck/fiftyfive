@@ -17,6 +17,7 @@ class Market(StrEnum):
     DE = "de"
     FR = "fr"
     UK = "uk"
+    NONE = ""
 
 
 class CustomerType(StrEnum):
