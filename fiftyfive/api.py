@@ -12,10 +12,11 @@ from .requests import Request
 
 
 class Market(StrEnum):
+    AT = "at"
     BELUX = "belux"
-    NL = "nl"
     DE = "de"
     FR = "fr"
+    NL = "nl"
     UK = "uk"
     NONE = ""
 
