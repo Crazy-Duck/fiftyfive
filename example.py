@@ -6,10 +6,11 @@ import logging
 from os import getenv
 from sys import stdout
 
-from aiohttp import ClientSession
 from dotenv import load_dotenv
+from httpx import AsyncClient
+from sgqlc.operation import Operation
 
-from fiftyfive import Api, CustomerType, Market, NetworkOverview, Overview
+from fiftyfive import Api, schema
 
 load_dotenv()
 
@@ -17,21 +18,22 @@ load_dotenv()
 async def main():
     """Main module"""
 
-    async with ClientSession() as session:
-        api = Api(session, getenv("50FIVE_EMAIL"), getenv("50FIVE_PASSWORD"), Market.BELUX, CustomerType.FORMER_SHELL)
+    async with AsyncClient() as client:
+        api = Api(client, getenv("50FIVE_EMAIL"), getenv("50FIVE_PASSWORD"))
 
-        networks = await api.make_requests([NetworkOverview()])
-        networks[0] += networks[0]
+        op = Operation(schema.Query)
+        cards = op.get_cards()
+        cards.items.id()
+        cards.items.internal_id()
+        cards.items.external_id()
+        cards.items.expiry_date()
 
-        details = await api.make_requests(
-            [
-                Overview(network["IDX"])
-                for network in networks[0]
-            ]
-        )
+        data = await api.make_request(op)
 
-        result = [c | d[0] for c, d in zip(networks[0], details, strict=True)]
-        [print(r) for r in result]
+        if data.get("errors"):
+            raise RuntimeError("Get cards failed")
+
+        print((op + data).get_cards)
 
 
 if __name__ == "__main__":

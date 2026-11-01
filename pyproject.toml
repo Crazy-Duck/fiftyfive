@@ -1,9 +1,10 @@
 [project]
 name = "fiftyfive"
-version = "0.6.0"
+version = "1.0.0"
 description = "Python 3 package to retrieve EV charger data from 50five"
 dependencies = [
-    "aiohttp",
+    "httpx",
+    "sgqlc"
 ]
 requires-python = ">=3.13"
 classifiers = [
