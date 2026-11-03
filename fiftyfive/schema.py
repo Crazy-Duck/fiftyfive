@@ -3525,6 +3525,7 @@ class Invoice(sgqlc.types.Type):
         "currency",
         "cust_currency",
         "amount_excl_vat",
+        "vat_percentage",
         "vat_amount",
         "amount_incl_vat",
         "cust_price_incl_vat",
@@ -3551,6 +3552,7 @@ class Invoice(sgqlc.types.Type):
     currency = sgqlc.types.Field(Currency, graphql_name="currency")
     cust_currency = sgqlc.types.Field(Currency, graphql_name="custCurrency")
     amount_excl_vat = sgqlc.types.Field(Float, graphql_name="amountExclVAT")
+    vat_percentage = sgqlc.types.Field(Float, graphql_name="vatPercentage")
     vat_amount = sgqlc.types.Field(Float, graphql_name="vatAmount")
     amount_incl_vat = sgqlc.types.Field(Float, graphql_name="amountInclVat")
     cust_price_incl_vat = sgqlc.types.Field(Float, graphql_name="custPriceInclVat")
@@ -6751,7 +6753,7 @@ class Query(sgqlc.types.Type):
         ),
     )
     schedules_simple = sgqlc.types.Field(
-        sgqlc.types.non_null(sgqlc.types.list_of("Schedule")),
+        sgqlc.types.non_null(sgqlc.types.list_of("ScheduleSimple")),
         graphql_name="schedulesSimple",
         args=sgqlc.types.ArgDict(
             (
