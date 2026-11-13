@@ -2759,6 +2759,19 @@ class CreateCustomerBacsMandateInput(sgqlc.types.Input):
     email = sgqlc.types.Field(String, graphql_name="email")
 
 
+class CreateEreMandateExtensionTicketInput(sgqlc.types.Input):
+    __schema__ = schema
+    __field_names__ = ("ean_code", "mandate_period")
+    ean_code = sgqlc.types.Field(sgqlc.types.non_null(String), graphql_name="eanCode")
+
+    mandate_period = sgqlc.types.Field(
+        sgqlc.types.non_null(String), graphql_name="mandatePeriod"
+    )
+    """The period and fee for the mandate extension. Example: 2 years,
+    21% fee (calendar years 2027-2028)
+    """
+
+
 class CreateEreMandateTicketInput(sgqlc.types.Input):
     __schema__ = schema
     __field_names__ = ("ean_code", "mandate_period")
@@ -7519,6 +7532,7 @@ class Mutation(sgqlc.types.Type):
         "send_mail",
         "update_ticket",
         "create_ere_mandate_ticket",
+        "create_ere_mandate_extension_ticket",
     )
     login_fifty_five = sgqlc.types.Field(
         sgqlc.types.non_null(JwtToken),
@@ -9116,6 +9130,27 @@ class Mutation(sgqlc.types.Type):
     * `input` (`CreateEreMandateTicketInput!`)None
     """
 
+    create_ere_mandate_extension_ticket = sgqlc.types.Field(
+        sgqlc.types.non_null("OdooTicket"),
+        graphql_name="createEreMandateExtensionTicket",
+        args=sgqlc.types.ArgDict(
+            (
+                (
+                    "input",
+                    sgqlc.types.Arg(
+                        sgqlc.types.non_null(CreateEreMandateExtensionTicketInput),
+                        graphql_name="input",
+                        default=None,
+                    ),
+                ),
+            )
+        ),
+    )
+    """Arguments:
+
+    * `input` (`CreateEreMandateExtensionTicketInput!`)None
+    """
+
 
 class OdooApiVersion(sgqlc.types.Type):
     __schema__ = schema
@@ -9292,6 +9327,14 @@ class OdooModel(sgqlc.types.Type):
     info = sgqlc.types.Field(String, graphql_name="info")
 
 
+class OdooOpportunity(sgqlc.types.Type):
+    __schema__ = schema
+    __field_names__ = ("id", "name")
+    id = sgqlc.types.Field(sgqlc.types.non_null(Int), graphql_name="id")
+
+    name = sgqlc.types.Field(String, graphql_name="name")
+
+
 class OdooPartner(sgqlc.types.Type):
     __schema__ = schema
     __field_names__ = ("id", "name")
@@ -9325,12 +9368,91 @@ class OdooProcessMailingListResponse(sgqlc.types.Type):
     message = sgqlc.types.Field(sgqlc.types.non_null(String), graphql_name="message")
 
 
+class OdooProduct(sgqlc.types.Type):
+    __schema__ = schema
+    __field_names__ = ("id", "name")
+    id = sgqlc.types.Field(sgqlc.types.non_null(Int), graphql_name="id")
+
+    name = sgqlc.types.Field(String, graphql_name="name")
+
+
 class OdooProvider(sgqlc.types.Type):
     __schema__ = schema
     __field_names__ = ("id", "name")
     id = sgqlc.types.Field(sgqlc.types.non_null(ID), graphql_name="id")
 
     name = sgqlc.types.Field(sgqlc.types.non_null(String), graphql_name="name")
+
+
+class OdooSaleOrder(sgqlc.types.Type):
+    __schema__ = schema
+    __field_names__ = (
+        "id",
+        "name",
+        "state",
+        "partner",
+        "opportunity",
+        "order_date",
+        "start_date",
+        "end_date",
+        "ean",
+        "lines",
+    )
+    id = sgqlc.types.Field(sgqlc.types.non_null(Int), graphql_name="id")
+
+    name = sgqlc.types.Field(sgqlc.types.non_null(String), graphql_name="name")
+    """Order reference, e.g. SO374727"""
+
+    state = sgqlc.types.Field(String, graphql_name="state")
+
+    partner = sgqlc.types.Field(OdooPartner, graphql_name="partner")
+    """Customer (partner_id)"""
+
+    opportunity = sgqlc.types.Field(OdooOpportunity, graphql_name="opportunity")
+    """CRM opportunity (opportunity_id)"""
+
+    order_date = sgqlc.types.Field(String, graphql_name="orderDate")
+    """Order date (date_order), UTC datetime"""
+
+    start_date = sgqlc.types.Field(String, graphql_name="startDate")
+    """Recurring plan start date (start_date)"""
+
+    end_date = sgqlc.types.Field(String, graphql_name="endDate")
+    """Recurring plan end date (end_date)"""
+
+    ean = sgqlc.types.Field(String, graphql_name="ean")
+    """EAN code (x_studio_ean)"""
+
+    lines = sgqlc.types.Field(
+        sgqlc.types.non_null(
+            sgqlc.types.list_of(sgqlc.types.non_null("OdooSaleOrderLine"))
+        ),
+        graphql_name="lines",
+    )
+
+
+class OdooSaleOrderLine(sgqlc.types.Type):
+    __schema__ = schema
+    __field_names__ = (
+        "id",
+        "description",
+        "product",
+        "product_template",
+        "quantity",
+        "price_unit",
+    )
+    id = sgqlc.types.Field(sgqlc.types.non_null(Int), graphql_name="id")
+
+    description = sgqlc.types.Field(String, graphql_name="description")
+    """Sales order product description (sale.order.line name)"""
+
+    product = sgqlc.types.Field(OdooProduct, graphql_name="product")
+
+    product_template = sgqlc.types.Field(OdooProduct, graphql_name="productTemplate")
+
+    quantity = sgqlc.types.Field(Float, graphql_name="quantity")
+
+    price_unit = sgqlc.types.Field(Float, graphql_name="priceUnit")
 
 
 class OdooScheduleResult(sgqlc.types.Type):
@@ -9888,6 +10010,7 @@ class Query(sgqlc.types.Type):
         "get_helpdesk_tickets_by_partner_id",
         "get_helpdesk_ticket_tracking_history",
         "get_partner_by_email",
+        "get_sale_orders_by_customer_id",
     )
     lms_card_details = sgqlc.types.Field(
         sgqlc.types.non_null(CardDetails),
@@ -11231,6 +11354,23 @@ class Query(sgqlc.types.Type):
     """Arguments:
 
     * `email` (`String!`)None
+    """
+
+    get_sale_orders_by_customer_id = sgqlc.types.Field(
+        sgqlc.types.non_null(sgqlc.types.list_of(sgqlc.types.non_null(OdooSaleOrder))),
+        graphql_name="getSaleOrdersByCustomerId",
+        args=sgqlc.types.ArgDict(
+            (
+                (
+                    "customer_id",
+                    sgqlc.types.Arg(Int, graphql_name="customerId", default=None),
+                ),
+            )
+        ),
+    )
+    """Arguments:
+
+    * `customer_id` (`Int`)None
     """
 
 
